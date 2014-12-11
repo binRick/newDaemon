@@ -1,11 +1,11 @@
 #!/usr/bin/env node
 
-var mkdirp = require('mkdirp');
-var cls = require('cli-color');
-var fs = require('fs');
-var service = process.argv[2] || 'none';
-var dir = '/service/' + service;
-var daemontools = require('daemontools');
+var mkdirp = require('mkdirp'),
+    cls = require('cli-color'),
+    fs = require('fs'),
+    service = process.argv[2] || 'none',
+    dir = '/service/' + service,
+    daemontools = require('daemontools');
 daemontools.svstat(dir, function(err, stats) {
     if (err && err.code == 'ENOENT') {
         console.log(cls.yellow('Attempting Service Install'));
@@ -29,6 +29,6 @@ daemontools.svstat(dir, function(err, stats) {
             console.log(cls.green('Installed to ' + dir + '\n\n'));
         });
     } else {
-console.log(stats);
+        console.log(stats);
     }
 });
