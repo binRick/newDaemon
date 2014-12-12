@@ -11,14 +11,30 @@ var prompt = require('prompt');
 
 daemontools.svstat(dir, function(err, stats) {
     if (err && err.code == 'ENOENT') {
-        //        console.log(cls.yellow('Attempting Service Install to ' + dir + '. ok?'));
         prompt.start();
-
         prompt.get([{
             description: 'New Service Name',
             type: 'string',
             default: service,
-        }, ], function(e, result) {
+        }, 
+
+{
+            description: 'New Service Port',
+            type: 'integer',
+            default: 3000,
+        },
+{
+            description: 'New Service Script',
+            type: 'string',
+            default: 'Server.js',
+        },
+{
+            description: 'New Service User',
+            type: 'string',
+            default: 'nobody',
+        },
+
+], function(e, result) {
             mkdirp(dir, function(err) {
                 if (err && (err.code == 'EACCES' || err.code == 'ENOENT')) {
                     console.log(cls.red('Failure to create directory ' + dir));
