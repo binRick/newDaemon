@@ -18,6 +18,11 @@ daemontools.svstat(dir, function(err, stats) {
                 type: 'string',
                 default: service,
             }, {
+                name: 'host',
+                description: 'New Service Bind Host',
+                type: 'string',
+                default: '127.0.0.1',
+            },  {
                 name: 'port',
                 description: 'New Service Port',
                 type: 'number',
@@ -50,6 +55,7 @@ daemontools.svstat(dir, function(err, stats) {
                     mkdirp(dir + '/log/main', function(err) {
                         var run = '#!/bin/sh\n' +
                             'export PORT="' + result.port + '"\n' +
+                            'export HOST="' + result.host + '"\n' +
                             'export USER="' + result.user + '"\n' +
                             'export BIN="' + result.bin + '"\n' +
                             'export SCRIPT="' + result.script + '"\n' +
