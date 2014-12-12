@@ -13,42 +13,41 @@ daemontools.svstat(dir, function(err, stats) {
     if (err && err.code == 'ENOENT') {
         prompt.start();
         prompt.get([{
-                name: 'service',
-                description: 'New Service Name',
-                type: 'string',
-                default: service,
-            }, {
-                name: 'host',
-                description: 'New Service Bind Host',
-                type: 'string',
-                default: '127.0.0.1',
-            }, {
-                name: 'port',
-                description: 'New Service Port',
-                type: 'number',
-                default: '3000',
-            }, {
-                name: 'bin',
-                description: 'New Service Interpretter',
-                type: 'string',
-                default: 'node',
-            }, {
-                name: 'DIR',
-                description: 'Directory which contains script to execute. Use "." if using Server.js script.',
-                type: 'string',
-                default: '.',
-            }, {
-                name: 'script',
-                description: 'Service Start Script, relative to above directory. Server.js will result in a new node script created for you.',
-                type: 'string',
-                default: 'Server.js',
-            }, {
-                name: 'user',
-                description: 'New Service User',
-                type: 'string',
-                default: 'nobody',
-            },
-        ], function(e, result) {
+            name: 'service',
+            description: 'New Service Name',
+            type: 'string',
+            default: service,
+        }, {
+            name: 'host',
+            description: 'New Service Bind Host',
+            type: 'string',
+            default: '127.0.0.1',
+        }, {
+            name: 'port',
+            description: 'New Service Port',
+            type: 'number',
+            default: '3000',
+        }, {
+            name: 'bin',
+            description: 'New Service Interpretter',
+            type: 'string',
+            default: 'node',
+        }, {
+            name: 'DIR',
+            description: 'Directory which contains script to execute. Use "." if using Server.js script.',
+            type: 'string',
+            default: '.',
+        }, {
+            name: 'script',
+            description: 'Service Start Script, relative to above directory. Server.js will result in a new node script created for you.',
+            type: 'string',
+            default: 'Server.js',
+        }, {
+            name: 'user',
+            description: 'New Service User',
+            type: 'string',
+            default: 'nobody',
+        }, ], function(e, result) {
             dir = '/service/' + result.service;
             mkdirp(dir, function(err) {
                 if (err && (err.code == 'EACCES' || err.code == 'ENOENT')) {
@@ -73,10 +72,10 @@ daemontools.svstat(dir, function(err, stats) {
                             'exec setuidgid ${RUN_AS} multilog t n20 s10000000 ./main\n';
                         var bin = '#!/usr/bin/env node\n' +
                             'var fs = require(\'fs\');\nconsole.log(\'Testing...\');\nsetTimeout(function(){}, 5000);\n';
-var cfg = '['+result.service+']\n'+
-'run_log = /service/'+result.service+'/log/main/current';
+                        var cfg = '[' + result.service + ']\n' +
+                            'run_log = /service/' + result.service + '/log/main/current';
 
-                        fs.writeFileSync(dir + '/.supervise_cfg', cfg, {
+                        fs.writeFileSync(dir + '/.supervise_web.cfg', cfg, {
                             mode: '0644'
                         });
                         fs.writeFileSync(dir + '/run', run, {
