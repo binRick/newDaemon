@@ -27,13 +27,13 @@ daemontools.svstat(dir, function(err, stats) {
                 description: 'New Service Port',
                 type: 'number',
                 default: '3000',
-}, {
+            }, {
                 name: 'bin',
                 description: 'New Service Interpretter',
                 type: 'string',
                 default: 'node',
 
-}, {
+            }, {
                 name: 'DIR',
                 description: 'Directory which contains script to execute. Use "." if using Server.js script.',
                 type: 'string',
