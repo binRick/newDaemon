@@ -27,11 +27,11 @@ daemontools.svstat(dir, function(err, stats) {
                 description: 'New Service Port',
                 type: 'number',
                 default: '3000',
-            }, {
-                name: 'script',
-                description: 'New Service relative to Directory. Server.js will result in a new node script created for you.',
+}, {
+                name: 'bin',
+                description: 'New Service Interpretter',
                 type: 'string',
-                default: 'Server.js',
+                default: 'node',
 
 }, {
                 name: 'DIR',
@@ -39,15 +39,15 @@ daemontools.svstat(dir, function(err, stats) {
                 type: 'string',
                 default: '.',
             }, {
+                name: 'script',
+                description: 'Service Start Script, relative to above directory. Server.js will result in a new node script created for you.',
+                type: 'string',
+                default: 'Server.js',
+            }, {
                 name: 'user',
                 description: 'New Service User',
                 type: 'string',
                 default: 'nobody',
-            }, {
-                name: 'bin',
-                description: 'New Service Interpretter',
-                type: 'string',
-                default: 'node',
             },
 
         ], function(e, result) {
@@ -64,7 +64,7 @@ daemontools.svstat(dir, function(err, stats) {
                             'export HOST="' + result.host + '"\n' +
                             'export USER="' + result.user + '"\n' +
                             'export BIN="' + result.bin + '"\n' +
-                            'export CUSTOMDATA="{\"test\":123}"\n' +
+                            'export CUSTOMDATA="{\\"test\\":123}"\n' +
                             'export DIR="/service/' + result.service + '/' + result.DIR + '"\n' +
                             'export SCRIPT="' + result.script + '"\n' +
                             'cd ${DIR}\n' +
