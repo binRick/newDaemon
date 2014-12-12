@@ -23,6 +23,7 @@
   "homepage": "https://github.com/binRick/newDaemon",
   "dependencies": {
     "daemontools": "0.0.0",
-    "mkdirp": "^0.5.0"
+    "mkdirp": "^0.5.0",
+    "prompt": "^0.2.14"
   }
 }
