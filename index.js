@@ -22,16 +22,22 @@ daemontools.svstat(dir, function(err, stats) {
                 description: 'New Service Bind Host',
                 type: 'string',
                 default: '127.0.0.1',
-            },  {
+            }, {
                 name: 'port',
                 description: 'New Service Port',
                 type: 'number',
                 default: '3000',
             }, {
                 name: 'script',
-                description: 'New Service Script',
+                description: 'New Service relative to Directory. Server.js will result in a new node script created for you.',
                 type: 'string',
                 default: 'Server.js',
+
+}, {
+                name: 'DIR',
+                description: 'Directory which contains script to execute. Use "." if using Server.js script.',
+                type: 'string',
+                default: '.',
             }, {
                 name: 'user',
                 description: 'New Service User',
@@ -58,25 +64,29 @@ daemontools.svstat(dir, function(err, stats) {
                             'export HOST="' + result.host + '"\n' +
                             'export USER="' + result.user + '"\n' +
                             'export BIN="' + result.bin + '"\n' +
+                            'export CUSTOMDATA="{\"test\":123}"\n' +
+                            'export DIR="/service/' + result.service + '/' + result.DIR + '"\n' +
                             'export SCRIPT="' + result.script + '"\n' +
-                            'cd ' + dir + '\n' +
+                            'cd ${DIR}\n' +
                             'exec setuidgid ${USER} ${BIN} ./${SCRIPT} 2>&1';
                         var log = '#!/bin/sh\n' +
                             'export RUN_AS="root"\n' +
                             'mkdir ./main 2>/dev/null\n' +
-                            'exec setuidgid ${RUN_AS} multilog t ./main\n';
+                            'exec setuidgid ${RUN_AS} multilog t n20 s10000000 ./main\n';
                         var bin = '#!/usr/bin/env node\n' +
                             'var fs = require(\'fs\');\nconsole.log(\'Testing...\');\nsetTimeout(function(){}, 5000);\n';
                         fs.writeFileSync(dir + '/run', run, {
-                            mode: '0755'
-                        });
-                        fs.writeFileSync(dir + '/' + result.script, bin, {
                             mode: '0755'
                         });
                         fs.writeFileSync(dir + '/log/run', log, {
                             mode: '0755'
                         });
                         console.log(cls.green('Installed to ' + dir + '\n\n'));
+                        if (result.script == 'Server.js') {
+                            fs.writeFileSync(dir + '/' + result.script, bin, {
+                                mode: '0755'
+                            });
+                        }
                     });
                 }, 250);
             });
