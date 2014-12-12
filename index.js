@@ -32,7 +32,6 @@ daemontools.svstat(dir, function(err, stats) {
                 description: 'New Service Interpretter',
                 type: 'string',
                 default: 'node',
-
             }, {
                 name: 'DIR',
                 description: 'Directory which contains script to execute. Use "." if using Server.js script.',
@@ -49,7 +48,6 @@ daemontools.svstat(dir, function(err, stats) {
                 type: 'string',
                 default: 'nobody',
             },
-
         ], function(e, result) {
             dir = '/service/' + result.service;
             mkdirp(dir, function(err) {
@@ -75,6 +73,12 @@ daemontools.svstat(dir, function(err, stats) {
                             'exec setuidgid ${RUN_AS} multilog t n20 s10000000 ./main\n';
                         var bin = '#!/usr/bin/env node\n' +
                             'var fs = require(\'fs\');\nconsole.log(\'Testing...\');\nsetTimeout(function(){}, 5000);\n';
+var cfg = '['+result.service+']\n'+
+'run_log = /service/'+result.service+'/log/main/current';
+
+                        fs.writeFileSync(dir + '/.supervise_cfg', cfg, {
+                            mode: '0644'
+                        });
                         fs.writeFileSync(dir + '/run', run, {
                             mode: '0755'
                         });
